@@ -16,8 +16,9 @@ export function Home() {
   const [orders, setOrders] = useState<OrderProps[]>([{
     id: '123',
     patrimony: '12345',
+    when: '18/07/2022 às 14:00',
     status: 'open',
-    when: '18/07/2022 às 14:00'
+    
   }]);
 
   function handleNewOrders() {
@@ -26,6 +27,7 @@ export function Home() {
 
   function handleOpenDetails(orderId: string) {
     navigation.navigate('details', { orderId})
+    console.log("passou")
   }
 
   return (
@@ -61,7 +63,7 @@ export function Home() {
             <FlatList 
                 data={orders}
                 keyExtractor={item => item.id}
-                renderItem={ ({item}) => <Orders data={item} onPress={ () => handleOpenDetails(item.id)} /> }
+                renderItem={ ({item}) => <Orders data={item} onPress={() => handleOpenDetails(item.id)} /> }
                 ListEmptyComponent={ () => (
                     <Center>
                         <ChatTeardropText color={colors.gray[300]} size={40} />

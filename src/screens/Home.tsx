@@ -1,8 +1,11 @@
 import { Heading, HStack, IconButton, Text, useTheme, VStack, FlatList, Center } from 'native-base';
+import auth from '@react-native-firebase/auth';
+import {Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {SignOut} from 'phosphor-react-native';
 import { useState } from 'react';
 import { ChatTeardropText} from 'phosphor-react-native';
+
 import Logo from '../assets/logo_secondary.svg';
 import { Button } from '../components/Button';
 import { Filter } from '../components/filter';
@@ -30,8 +33,13 @@ export function Home() {
     console.log("passou")
   }
 
-  function handleSignOut() {
-    navigation.navigate('home');
+  function handleLogOut() {
+    auth()
+    .signOut()
+    .catch( (error) => {
+      console.log(error);
+      return Alert.alert("Não foi possivel sair");
+    });
   }
 
   return (
@@ -49,6 +57,7 @@ export function Home() {
 
             <IconButton
                 icon={<SignOut size={26} color={colors.gray[300]}  />}
+                onPress={handleLogOut}
             />
         </HStack>
 

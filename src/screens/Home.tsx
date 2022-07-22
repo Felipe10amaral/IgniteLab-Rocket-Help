@@ -30,6 +30,10 @@ export function Home() {
     console.log("passou")
   }
 
+  function handleSignOut() {
+    navigation.navigate('home');
+  }
+
   return (
     <VStack flex={1} pb={6} bg="gray.700" >
         <HStack
@@ -43,8 +47,8 @@ export function Home() {
         >
             <Logo />
 
-            <IconButton 
-                icon={<SignOut size={26} color={colors.gray[300]} />}
+            <IconButton
+                icon={<SignOut size={26} color={colors.gray[300]}  />}
             />
         </HStack>
 

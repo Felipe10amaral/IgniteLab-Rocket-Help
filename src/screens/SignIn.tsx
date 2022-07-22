@@ -1,16 +1,35 @@
 import React, {useState} from 'react';
 import {Icon, Heading, VStack, useTheme} from 'native-base';
 import { Envelope, Key} from 'phosphor-react-native';
+import auth from '@react-native-firebase/auth';
+import { Alert } from 'react-native';
 
 import Logo from '../assets/logo_primary.svg';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 
 export function SignIn() {
-    const [ name, setName] = useState('');
+    const [ email, setEmail] = useState('');
     const [ password, setPassword ] = useState('');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const {colors} = useTheme();
+
+    function handleSignIn() {
+      if(!email || !password) {
+        return Alert.alert(" Email ou senha incorretos");
+      }
+
+      setIsLoading(true);
+
+      auth().signInWithEmailAndPassword(email, password)
+      .catch( (error) => {
+        console.log(error.code);
+        setIsLoading(false);
+      })
+
+    }
 
     return(
         <VStack flex={1} alignItems="center" bg="gray.600" px={8} pt={24} >
@@ -24,7 +43,7 @@ export function SignIn() {
                 placeholder="Email" 
                 mb={4}
                 InputLeftElement={ <Icon as={ <Envelope color={colors.gray[300]} /> } ml={4} />}
-                onChangeText={setName}
+                onChangeText={setEmail}
             />
             <Input 
                 placeholder="Senha"
@@ -34,7 +53,7 @@ export function SignIn() {
                 onChangeText={setPassword}
             />
 
-            <Button title='Entrar' w="full" />
+            <Button title='Entrar' w="full" onPress={handleSignIn} isLoading={isLoading} />
         </VStack>
     );
 }

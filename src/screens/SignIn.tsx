@@ -27,6 +27,16 @@ export function SignIn() {
       .catch( (error) => {
         console.log(error.code);
         setIsLoading(false);
+
+        if(error.code === 'auth/invalid-email') {
+            return Alert.alert("E-mail ou senha inválidos")
+        }
+
+        if(error.code === 'auth/user-not-found') {
+            return Alert.alert("E-mail ou senha não encontrados")
+        }
+
+        return Alert.alert(" Não foi possivel acessar");
       })
 
     }

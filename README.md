@@ -1,5 +1,11 @@
 # Projeto da Trilha React Native - Rocketseat
 
-## MySkills - Projeto simples para adicionar e remover skills e competencias técnicas pessoais
+## Rocket-Help - Projeto do Ignite Lab utilizando React Native
+
+### Aplicativo de solicitação de abertura de manutenção
+
+### Tecnologias Utilizadas
+
+#### Firebase, NativeBase, Typescript, Expo Bare Workflow, 
 
 <img src="src/assets/Rocket-help.gif" width="250" height="500"/>

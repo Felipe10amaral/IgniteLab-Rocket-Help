@@ -3,26 +3,24 @@ import auth from '@react-native-firebase/auth';
 import {Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {SignOut} from 'phosphor-react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChatTeardropText} from 'phosphor-react-native';
+import firestore from '@react-native-firebase/firestore';
 
 import Logo from '../assets/logo_secondary.svg';
 import { Button } from '../components/Button';
 import { Filter } from '../components/filter';
 import { Orders, OrderProps } from '../components/Orders';
+import { dateFormat } from '../utils/firestoreDataDateFormat';
+import { Loading } from '../components/Loading';
 
 export function Home() {
   const { colors }= useTheme(); 
   const navigation = useNavigation();
   
+  const [loading, setLoading] = useState(true);
   const [statusSelected, setStatusSelected] = useState<'open' | 'closed' >('open');
-  const [orders, setOrders] = useState<OrderProps[]>([{
-    id: '123',
-    patrimony: '12345',
-    when: '18/07/2022 às 14:00',
-    status: 'open',
-    
-  }]);
+  const [orders, setOrders] = useState<OrderProps[]>([]);
 
   function handleNewOrders() {
     navigation.navigate('new');
@@ -41,6 +39,31 @@ export function Home() {
       return Alert.alert("Não foi possivel sair");
     });
   }
+
+  useEffect( () => {
+    setLoading(true);
+
+    const subscriber = firestore()
+      .collection('order')
+      .where('status', '==', statusSelected)
+      .onSnapshot(snapshot => {
+        const data = snapshot.docs.map(doc => {
+          const { patrimony, description, status, created_at} = doc.data();
+           
+          return {
+            id: doc.id,
+            patrimony,
+            description,
+            status,
+            when: dateFormat(created_at)
+           }
+        });
+        setOrders(data);
+        setLoading(false);
+    });
+
+    return subscriber;
+  }, [statusSelected]);
 
   return (
     <VStack flex={1} pb={6} bg="gray.700" >
@@ -66,14 +89,16 @@ export function Home() {
                 <Heading color="gray.100">
                     Meus Chamados
                 </Heading>
-                <Text color="gray.200" > 3 </Text>
+                <Text color="gray.200" > {orders.length} </Text>
             </HStack>    
             <HStack space={3} mb={8}>
                 <Filter title='Em Andamento' type='open' isActive={statusSelected === 'open'} onPress={() => setStatusSelected('open')}/>
                 <Filter title='Finalizado' type='closed' isActive={statusSelected === 'closed'} onPress={() => setStatusSelected('closed')} />
             </HStack>
 
-            <FlatList 
+            {
+              loading ? <Loading /> :
+              <FlatList 
                 data={orders}
                 keyExtractor={item => item.id}
                 renderItem={ ({item}) => <Orders data={item} onPress={() => handleOpenDetails(item.id)} /> }
@@ -86,6 +111,7 @@ export function Home() {
                     </Center>
                 )}
             />
+            }
             <Button title='Nova Solicitação' onPress={handleNewOrders} />
         </VStack>      
     </VStack>

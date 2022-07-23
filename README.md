@@ -6,6 +6,6 @@
 
 ### Tecnologias Utilizadas
 
-#### Firebase, NativeBase, Typescript, Expo Bare Workflow, 
+#### Firebase, NativeBase, Typescript e Expo Bare Workflow
 
 <img src="src/assets/Rocket-help.gif" width="250" height="500"/>

@@ -18,7 +18,7 @@ export function SignIn() {
 
     function handleSignIn() {
       if(!email || !password) {
-        return Alert.alert(" Email ou senha incorretos");
+        return Alert.alert("Erro", "Email ou senha incorretos");
       }
 
       setIsLoading(true);
@@ -29,14 +29,14 @@ export function SignIn() {
         setIsLoading(false);
 
         if(error.code === 'auth/invalid-email') {
-            return Alert.alert("E-mail ou senha inválidos")
+            return Alert.alert("Erro","E-mail ou senha inválidos")
         }
 
         if(error.code === 'auth/user-not-found') {
-            return Alert.alert("E-mail ou senha não encontrados")
+            return Alert.alert("Erro","E-mail ou senha não encontrados")
         }
 
-        return Alert.alert(" Não foi possivel acessar");
+        return Alert.alert("Erro"," Email ou senha incorretos");
       })
 
     }

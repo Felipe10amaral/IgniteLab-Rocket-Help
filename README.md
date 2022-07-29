@@ -8,4 +8,5 @@
 
 #### Firebase, NativeBase, Typescript e Expo Bare Workflow
 
+#### Video abaixo mostrando o projeto
 <img src="src/assets/Rocket-help.gif" width="250" height="500"/>
